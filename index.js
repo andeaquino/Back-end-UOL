@@ -2,10 +2,7 @@ import express from "express";
 import cors from 'cors';
 import dayjs from "dayjs";
 
-let participants = [{
-    name: "Joao",
-    lastStatus: 2
-}];
+let participants = [];
 const messages = [];
 
 const app = express();
