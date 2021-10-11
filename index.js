@@ -12,6 +12,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const updateUsers = () => {
+    const currentTime = Date.now();
+    participants = participants.filter(participant => {
+        if ((currentTime - participant.lastStatus) / 1000 > 10) {
+            messages.push({
+                from: participant.name,
+                to: 'Todos',
+                text: 'sai da sala...',
+                type: 'status',
+                time: dayjs().format("HH:mm:ss")
+            });
+            return;
+        }
+        return participant;
+    });
+}
+
+setInterval(updateUsers, 15000);
+
 app.post('/participants', (req, res) => {
     const name = req.body.name;
     const isUsed = participants.find(participant => participant.name === name);
@@ -57,7 +76,7 @@ app.get('/messages', (req, res) => {
     const user = req.header('User');
     const userMessages = [];
     messages.map(message => {
-        if (message.type === 'message') {
+        if (message.to === 'Todos') {
             userMessages.push(message);
         } else {
             if (message.to === user || message.from === user) {
